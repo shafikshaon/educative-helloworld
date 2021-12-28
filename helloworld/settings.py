@@ -119,4 +119,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-CSRF_TRUSTED_ORIGINS = ['6e4wyj8lvnx39.educative.run']
+CSRF_TRUSTED_ORIGINS = ['https://6e4wyj8lvnx39.educative.run']
