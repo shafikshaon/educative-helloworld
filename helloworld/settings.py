@@ -75,10 +75,15 @@ WSGI_APPLICATION = 'helloworld.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+if DEBUG:
+    DB_BASE_DIR = BASE_DIR
+else:
+    DB_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(DB_BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -117,6 +122,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 CSRF_TRUSTED_ORIGINS = ['https://6e4wyj8lvnx39.educative.run']
