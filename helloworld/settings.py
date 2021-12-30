@@ -67,7 +67,7 @@ try:
 except:
     EDUCATIVE_ENVIRONMENT = False
 
-if EDUCATIVE_ENVIRONMENT:
+if not EDUCATIVE_ENVIRONMENT:
     DB_BASE_DIR = BASE_DIR
 else:
     DB_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
