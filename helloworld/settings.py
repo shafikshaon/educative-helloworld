@@ -76,7 +76,12 @@ WSGI_APPLICATION = 'helloworld.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG:
+try:
+    EDUCATIVE_ENVIRONMENT = bool(os.environ['EDUCATIVE_ENVIRONMENT'])
+except:
+    EDUCATIVE_ENVIRONMENT = False
+
+if EDUCATIVE_ENVIRONMENT:
     DB_BASE_DIR = BASE_DIR
 else:
     DB_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -124,14 +129,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    '/usr/local/educative/helloworld/static'
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-for folder in STATICFILES_DIRS:
-    print(folder)
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+#     '/usr/local/educative/helloworld/static'
+# ]
+
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
