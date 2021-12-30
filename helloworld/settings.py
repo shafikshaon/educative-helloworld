@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '%!jf3(33rjwog+l5$e-xm+aonh1s@yljlfwb$$whw^a+ilc2n)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 try:
     ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
@@ -122,5 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    '/usr/local/educative/helloworld/static'
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+FILE_UPLOAD_PERMISSIONS = 0O640
 
 CSRF_TRUSTED_ORIGINS = ['https://6e4wyj8lvnx39.educative.run']
