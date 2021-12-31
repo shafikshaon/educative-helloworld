@@ -70,14 +70,14 @@ except:
     EDUCATIVE_ENVIRONMENT = False
 
 if not EDUCATIVE_ENVIRONMENT:
-    DB_BASE_DIR = BASE_DIR
+    _BASE_DIR = BASE_DIR
 else:
-    DB_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(DB_BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(_BASE_DIR, 'db.sqlite3'),
     }
 }
 
