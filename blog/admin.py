@@ -1,10 +1,14 @@
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib import admin
+from django.contrib import messages
+from django.contrib.auth import get_permission_codename
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.html import format_html
+from django.utils.translation import ngettext
 
 from blog.models import Post
 
@@ -76,6 +80,30 @@ class PostAdmin(admin.ModelAdmin):
             writer.writerow(data_row)
         return response
 
+    @admin.action(permissions=['change', 'publish'], description='Mark selected blog as published', )
+    def publish_blog(self, request, queryset):
+        updated = queryset.count()
+        try:
+            queryset.update(publish=timezone.now() - timedelta(days=1), status='published')
+            self.message_user(request, ngettext(
+                '%d blog was published successfully.',
+                '%d blogs were published successfully.',
+                updated,
+            ) % updated, messages.SUCCESS)
+
+        except:
+            self.message_user(request, ngettext(
+                '%d blog was not published successfully.',
+                '%d blogs were not published successfully.',
+                updated,
+            ) % updated, messages.ERROR)
+
+    def has_publish_permission(self, request):
+        """Does the user have the blog publish permission?"""
+        opts = self.opts
+        codename = get_permission_codename('publish', opts)
+        return request.user.has_perm('%s.%s' % (opts.app_label, codename))
+
     empty_value_display = '...'
     # list_display_links = None
     list_display_links = ('id', 'author',)
@@ -91,8 +119,10 @@ class PostAdmin(admin.ModelAdmin):
     search_help_text = "Search for title, author, and status."
     show_full_result_count = False
     list_filter = (BlogStatusListFilter, 'author',)
-    # actions = [export_to_csv, make_draft_using_secondary_page, ]
-    actions = None
+    actions = [export_to_csv, make_draft_using_secondary_page, publish_blog, ]
+
+    # actions = None
+
     def get_actions(self, request):
         actions = super().get_actions(request)
         if not request.user.is_superuser:
