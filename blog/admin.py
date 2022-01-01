@@ -12,7 +12,10 @@ from django.utils.html import format_html
 from django.utils.translation import ngettext
 
 from blog.models import Post
-
+from django.contrib.admin import AdminSite
+class MyAdminSite(AdminSite):
+    # Disable View on Site link on admin page
+    site_url = None
 
 class BlogStatusListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -54,6 +57,10 @@ class BlogForm(forms.ModelForm):
 
 
 class PostAdmin(admin.ModelAdmin):
+    # def view_on_site(self, obj):
+    #     url = reverse('blog-detail', kwargs={'slug': obj.slug})
+    #     return 'https://example.com' + url
+
     def make_draft_using_secondary_page(self, request, queryset):
         if 'apply' in request.POST:
             # # Perform our update action:
@@ -146,8 +153,8 @@ class PostAdmin(admin.ModelAdmin):
     save_as = True
     save_on_top = True
     export_to_csv.short_description = 'Export to CSV'
-
     # actions = None
+    view_on_site = False
 
     def get_actions(self, request):
         actions = super().get_actions(request)
