@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime, timedelta
 
+from django import forms
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.auth import get_permission_codename
@@ -43,6 +44,13 @@ class BlogStatusListFilter(admin.SimpleListFilter):
             return queryset.filter(status='published')
         if self.value() == 'Unpublished':
             return queryset.filter(status='draft')
+
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'body', ]
+        exclude = ['publish']
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -120,6 +128,24 @@ class PostAdmin(admin.ModelAdmin):
     show_full_result_count = False
     list_filter = (BlogStatusListFilter, 'author',)
     actions = [export_to_csv, make_draft_using_secondary_page, publish_blog, ]
+
+    # fields = ('title', 'body',)
+    fieldsets = [
+        ("Basic", {'fields': ['title', 'body', 'status', ], "description": "Basic information"}),
+        ("Author", {'fields': ['author', 'published_by', ], "description": "Author information"}),
+        ("Date", {
+            'classes': ('wide',),
+            'fields': ['publish', ]
+        }),
+    ]
+    # form = BlogForm
+    list_editable = ('title',)
+    prepopulated_fields = {"body": ("title",)}
+    autocomplete_fields = ['author', ]
+    save_as_continue=True
+    save_as=True
+    save_on_top=True
+    export_to_csv.short_description = 'Export to CSV'
 
     # actions = None
 
