@@ -1,4 +1,9 @@
+import csv
+from datetime import datetime
+
 from django.contrib import admin
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 from django.utils.html import format_html
 
 from blog.models import Post
@@ -37,6 +42,40 @@ class BlogStatusListFilter(admin.SimpleListFilter):
 
 
 class PostAdmin(admin.ModelAdmin):
+    def make_draft_using_secondary_page(self, request, queryset):
+        if 'apply' in request.POST:
+            # # Perform our update action:
+            queryset.update(status='draft')
+            # Redirect to our admin view after our update has
+            # completed with a nice little info message saying
+            # our models have been updated:
+            self.message_user(request,
+                              "Changed to DRAFT on {} post".format(queryset.count()))
+            return HttpResponseRedirect(request.get_full_path())
+
+        return render(request, 'admin/make_draft.html', context={'posts': queryset})
+
+    def export_to_csv(modeladmin, request, queryset):
+        opts = modeladmin.model._meta
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; \
+            filename={}.csv'.format(opts.verbose_name)
+        writer = csv.writer(response)
+        fields = [field for field in opts.get_fields()
+                  if not field.many_to_many and not field.one_to_many]
+        # Write a first row with header information
+        writer.writerow([field.verbose_name for field in fields])
+        # Write data rows
+        for obj in queryset:
+            data_row = []
+            for field in fields:
+                value = getattr(obj, field.name)
+                if isinstance(value, datetime):
+                    value = value.strftime('%d/%m/%Y %H:%M:%S')
+                data_row.append(value)
+            writer.writerow(data_row)
+        return response
+
     empty_value_display = '...'
     # list_display_links = None
     list_display_links = ('id', 'author',)
@@ -52,6 +91,7 @@ class PostAdmin(admin.ModelAdmin):
     search_help_text = "Search for title, author, and status."
     show_full_result_count = False
     list_filter = (BlogStatusListFilter, 'author',)
+    actions = [export_to_csv, make_draft_using_secondary_page, ]
 
     @admin.display(description='Name', empty_value='N/A')
     def author_full_name(self, obj):
