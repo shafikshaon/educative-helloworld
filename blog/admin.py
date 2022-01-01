@@ -142,9 +142,9 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('title',)
     prepopulated_fields = {"body": ("title",)}
     autocomplete_fields = ['author', ]
-    save_as_continue=True
-    save_as=True
-    save_on_top=True
+    save_as_continue = True
+    save_as = True
+    save_on_top = True
     export_to_csv.short_description = 'Export to CSV'
 
     # actions = None
