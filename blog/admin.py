@@ -91,7 +91,14 @@ class PostAdmin(admin.ModelAdmin):
     search_help_text = "Search for title, author, and status."
     show_full_result_count = False
     list_filter = (BlogStatusListFilter, 'author',)
-    actions = [export_to_csv, make_draft_using_secondary_page, ]
+    # actions = [export_to_csv, make_draft_using_secondary_page, ]
+    actions = None
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if not request.user.is_superuser:
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
 
     @admin.display(description='Name', empty_value='N/A')
     def author_full_name(self, obj):
@@ -104,3 +111,4 @@ class PostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostAdmin)
+# admin.site.disable_action('delete_selected')
