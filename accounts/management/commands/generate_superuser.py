@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         try:
-            User.objects.create_superuser(username='educative', password='p@ss1234')
+            User.objects.create_superuser(username='educative', email='educative@mail.com',password='p@ss1234')
             self.stdout.write('Create superuser.')
         except:
             pass

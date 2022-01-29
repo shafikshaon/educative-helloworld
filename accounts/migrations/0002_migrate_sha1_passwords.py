@@ -15,7 +15,7 @@ def forwards_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('accounts', '0001_initial'),
+        # ('accounts', '0001_initial'),
         # replace this with the latest migration in contrib.auth
     ]
 
