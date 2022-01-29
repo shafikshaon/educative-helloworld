@@ -1,10 +1,11 @@
 from django.db import migrations
 
+from accounts.models import SystemUser
 from ..hashers import PBKDF2WrappedSHA1PasswordHasher
 
 
 def forwards_func(apps, schema_editor):
-    User = apps.get_model('auth', 'User')
+    User = SystemUser
     users = User.objects.filter(password__startswith='sha1$')
     hasher = PBKDF2WrappedSHA1PasswordHasher()
     for user in users:

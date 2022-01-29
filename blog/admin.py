@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django import forms
 from django.contrib import admin
 from django.contrib import messages
+from django.contrib.admin import AdminSite
 from django.contrib.auth import get_permission_codename
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
@@ -12,10 +13,12 @@ from django.utils.html import format_html
 from django.utils.translation import ngettext
 
 from blog.models import Post
-from django.contrib.admin import AdminSite
+
+
 class MyAdminSite(AdminSite):
     # Disable View on Site link on admin page
     site_url = None
+
 
 class BlogStatusListFilter(admin.SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -130,7 +133,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'title', 'author_full_name', 'author', 'created', 'publish', 'marked_blog_status', 'summery'
     )
-    search_fields = ('title', 'author__username', 'status',)
+    search_fields = ('title', 'author', 'author__username', 'status',)
     search_help_text = "Search for title, author, and status."
     show_full_result_count = False
     list_filter = (BlogStatusListFilter, 'author',)

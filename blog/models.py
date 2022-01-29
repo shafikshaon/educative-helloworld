@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
+from accounts.models import SystemUser
+
 
 class Post(models.Model):
     """
@@ -15,10 +17,10 @@ class Post(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
                             unique_for_date='publish')
-    author = models.ForeignKey(User,
+    author = models.ForeignKey(SystemUser,
                                on_delete=models.CASCADE,
                                related_name='blog_posts')
-    published_by = models.ForeignKey(User,
+    published_by = models.ForeignKey(SystemUser,
                                      on_delete=models.CASCADE,
                                      related_name='blog_published_by', null=True)
     body = models.TextField()
