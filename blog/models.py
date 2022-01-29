@@ -33,6 +33,9 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-publish',)
+        permissions = [
+            ("can_publish", "Can publish a blog"),
+        ]
 
     def __str__(self):
         return self.title
