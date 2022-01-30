@@ -12,5 +12,14 @@
 <br>
 
 <a href="{% url 'logout' %}">Sign Out</a>
+
+
+{% if perms.blog %}
+    {% if perms.blog.add_post %}
+        <p>You can add blog post.</p>
+    {% endif %}
+{% else %}
+    <p>You don't have permission.</p>
+{% endif %}
 </body>
 </html>
