@@ -153,3 +153,5 @@ AUTHENTICATION_BACKENDS = (
 AUTH_USER_MODEL = 'accounts.SystemUser'
 
 LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL = '/auth/login/'
