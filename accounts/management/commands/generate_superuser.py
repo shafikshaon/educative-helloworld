@@ -1,6 +1,9 @@
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from faker import Faker
+
+from accounts.models import SystemUser
+
+User = SystemUser
 
 
 class Command(BaseCommand):
@@ -8,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         try:
-            User.objects.create_superuser(username='educative', email='educative@mail.com',password='p@ss1234')
+            User.objects.create_superuser(username='educative', email='educative@mail.com', password='p@ss1234')
             self.stdout.write('Create superuser.')
         except:
             pass
