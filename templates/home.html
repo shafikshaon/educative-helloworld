@@ -6,7 +6,11 @@
 </head>
 <body>
 {% if perms.blog.can_add %}
-    <strong>{{ request.user }}</strong> have add permission
+    <strong>{{ request.user }}</strong> have blog add permission.
 {% endif %}
+
+<br>
+
+<a href="{% url 'logout' %}">Sign Out</a>
 </body>
 </html>
