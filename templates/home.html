@@ -5,15 +5,16 @@
     <title>Blog</title>
 </head>
 <body>
-{% if perms.blog.can_add %}
-    <strong>{{ request.user }}</strong> have blog add permission.
-{% endif %}
+<div style="text-align: center">
+    {% if perms.blog.can_add %}
+        <strong>{{ request.user }}</strong> have blog add permission.
+    {% endif %}
 
-<br>
+    <br>
 
-<a href="{% url 'logout' %}">Sign Out</a>
-<a href="{% url 'password_change' %}">Change Password</a>
-
+    <a href="{% url 'logout' %}">Sign Out</a>
+    <a href="{% url 'password_change' %}">Change Password</a>
+</div>
 
 {% if perms.blog %}
     {% if perms.blog.add_post %}
