@@ -12,7 +12,7 @@ SECRET_KEY = '%!jf3(33rjwog+l5$e-xm+aonh1s@yljlfwb$$whw^a+ilc2n)'
 DEBUG = True
 
 try:
-    ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
+    ALLOWED_HOSTS = ['{{EDUCATIVE_LIVE_VM_URL}}'.replace('https://', '')]
 except:
     ALLOWED_HOSTS = ['*']
 
@@ -40,7 +40,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-X_FRAME_OPTIONS = "allow-from https://educative.io"
+# X_FRAME_OPTIONS = "allow-from https://educative.io"
 
 ROOT_URLCONF = 'helloworld.urls'
 
@@ -131,13 +131,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 FILE_UPLOAD_PERMISSIONS = 0O640
 
-CSRF_TRUSTED_ORIGINS = ['https://6e4wyj8lvnx39.educative.run']
-
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
@@ -155,3 +148,9 @@ AUTH_USER_MODEL = 'accounts.SystemUser'
 LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = '/auth/login/'
+
+CSRF_TRUSTED_ORIGINS = ['{{EDUCATIVE_LIVE_VM_URL}}']
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
